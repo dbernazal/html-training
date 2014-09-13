@@ -1,10 +1,15 @@
 //Initialization
 $(document).ready(function() {
-    var navView = new NavView('#navBar');
+    var navView;
+
+    window.app = {};
+
+    app.mainContainer = new ContainerView('#mainContainer');
+    navView = new NavView('#navBar', app.mainContainer);
 });
 
 /****************** Nav View ********************/
-function NavView(elementSelector) {
+function NavView(elementSelector, containerView) {
     var self = this;
 
     self.links = {
@@ -13,7 +18,7 @@ function NavView(elementSelector) {
     }
 
     self.el = $(elementSelector);
-
+    this.containerView = containerView;
     self.bindListeners();
 }
 
@@ -23,12 +28,36 @@ $.extend(NavView.prototype, {
         $(element).addClass('active');
     },
 
+    openHome: function (containerView) {
+        containerView.show( new HomeView() );
+    },
+
     bindListeners: function () {
         var self = this;
 
         self.el.find('li').click(function() {
             self.highlightNavLink(this);
         });
+
+        self.links.homeLink.click(function(event) {
+            self.openHome(self.containerView);
+        });
+    }
+});
+
+/****************** Container View ********************/
+function ContainerView(element) {
+    this.el = $(element);
+}
+
+$.extend(ContainerView.prototype, {
+    show: function (view) {
+        if (this.child){
+            this.child.close();
+        }
+
+        this.child = view;
+        this.el.append( view.render() );
     }
 });
 
@@ -42,5 +71,34 @@ function HomeView() {
 }
 
 $.extend(HomeView.prototype, {
-    
+    render: function () {
+        return this.el = $(this.template);
+    },
+
+    close: function () {
+        this.el.remove();
+    }
+});
+
+/****************** Search View ********************/
+function SearchView() {
+    this.template =
+                '<div id="search">' +
+                    '<h2>Search PROSify</h2>' +
+                    '<form class="form-group" id="custom-search-input">' +
+                        '<div class="input-group col-md-12">' +
+                            '<input type="text" class="  search-query form-control" placeholder="Search" />' +
+                            '<span class="input-group-btn">' +
+                                '<button class="btn btn-danger" type="submit">' +
+                                    '<span class=" glyphicon glyphicon-search"></span>' +
+                                '</button>' +
+                            '</span>' +
+                        '</div>' +
+                    '</form>' +
+                    '<div id="searchResults"/>' +
+                '</div>';
+}
+
+$.extend(SearchView.prototype, {
+
 });
