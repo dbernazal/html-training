@@ -4,9 +4,41 @@
     <meta charset="utf-8" />
     <title>Hello World</title>
  
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+        <link rel="stylesheet" href="styles/dashboard.css">
     </style>
 </head>
 <body>
-    <h1>Hello World</h1>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">PROSify</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div id="navBar" class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <!-- Add your links here -->
+          </ul>
+        </div>
+        <div id="mainContainer" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <button id="myButton">Button with an id</button>
+            <button class="button-class">Button with a class</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
