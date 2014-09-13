@@ -23,9 +23,14 @@ function NavView(elementSelector, containerView) {
 }
 
 $.extend(NavView.prototype, {
+
     highlightNavLink: function (element) {
         this.el.find('li').removeClass('active');
         $(element).addClass('active');
+    },
+
+    openSearch: function (containerView) {
+        containerView.show( new SearchView() );
     },
 
     openHome: function (containerView) {
@@ -41,6 +46,10 @@ $.extend(NavView.prototype, {
 
         self.links.homeLink.click(function(event) {
             self.openHome(self.containerView);
+        });
+
+        self.links.searchLink.click(function(event) {
+            self.openSearch(self.containerView);
         });
     }
 });
@@ -100,5 +109,22 @@ function SearchView() {
 }
 
 $.extend(SearchView.prototype, {
+    init: function () {
+        this.ui =
+        {
+            searchInput: this.el.find('input'),
+            results: this.el.find('#searchResults'),
+            searchForm: this.el.find('form')
+        }
+    },
 
+    render: function () {
+        this.el = $(this.template);
+        this.init();
+        return this.el;
+    },
+
+    close: function () {
+        this.el.remove();
+    },
 });
