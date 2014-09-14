@@ -1,11 +1,14 @@
 //Initialization
 $(document).ready(function() {
-    var navView;
+    var mainContainer,
+      navView;
 
-    window.app = {};
+  window.app = {};
 
-    app.mainContainer = new ContainerView('#mainContainer');
-    navView = new NavView('#navBar', app.mainContainer);
+  app.mainContainer = new ContainerView('#mainContainer');
+  navView = new NavView('#navBar', app.mainContainer);
+
+  app.mainContainer.show( new HomeView() );
 });
 
 /****************** Nav View ********************/
@@ -174,12 +177,55 @@ function ArtistResultView( artist ) {
 }
 
 $.extend(ArtistResultView.prototype, {
+    init: function () {
+        this.bindListeners();
+    },
+
+    bindListeners: function () {
+        var self = this;
+
+        this.el.click(function (event) {
+            window.app.mainContainer.show( new ArtistView(self.artist) );
+        });
+    },
+
+    unbindListeners: function () {
+        this.el.off('click');
+    },
+
     render: function () {
         this.el = $(this.template);
+        this.init();
         return this.el;
     },
 
     close: function () {
         this.unbindListeners();
     }
+});
+
+/****************** Artist View ********************/
+function ArtistView( artist ) {
+    this.artist = artist;
+
+    this.template = this.compileTemplate(artist);
+}
+
+$.extend(ArtistView.prototype, {
+    compileTemplate: function (artist) {
+        var myTemplate = '<div>' +
+                            '<h4>' + this.artist.name + '</h4>' +
+                            '<img src="'+ this.artist.images[0].url + '" class="img-rounded"></img>'
+                        '</div>';
+
+        return myTemplate;
+    },
+
+    render: function () {
+        return this.el = $(this.template);
+    },
+
+    close: function () {
+        this.el.remove();
+    },
 });
