@@ -116,6 +116,8 @@ $.extend(SearchView.prototype, {
             results: this.el.find('#searchResults'),
             searchForm: this.el.find('form')
         }
+
+        this.bindListeners();
     },
 
     render: function () {
@@ -124,7 +126,31 @@ $.extend(SearchView.prototype, {
         return this.el;
     },
 
+    renderResults: function (query){
+        this.ui.results.empty();
+        this.ui.results.append('<div>' + query + '</div>');
+    },
+
+    bindListeners: function () {
+        var self = this;
+
+        this.ui.searchForm.on('submit', function (event) {
+            self.search( self.ui.searchInput.val() );
+        });
+    },
+
+    unbindListeners: function () {
+        this.ui.searchForm.off('submit');
+    },
+
     close: function () {
         this.el.remove();
+        this.unbindListeners();
     },
+
+    search: function (query) {
+        var self = this;
+
+        self.renderResults(query);
+    }
 });
