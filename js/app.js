@@ -132,7 +132,8 @@ $.extend(SearchView.prototype, {
     },
 
     renderArtist: function (artist) {
-        this.ui.results.append( artist.name + '<br>' );
+        var resultView = new ArtistResultView( artist );
+        this.ui.results.append( resultView.render() );
     },
 
     bindListeners: function () {
@@ -173,5 +174,12 @@ function ArtistResultView( artist ) {
 }
 
 $.extend(ArtistResultView.prototype, {
+    render: function () {
+        this.el = $(this.template);
+        return this.el;
+    },
 
+    close: function () {
+        this.unbindListeners();
+    }
 });
