@@ -126,9 +126,13 @@ $.extend(SearchView.prototype, {
         return this.el;
     },
 
-    renderResults: function (query){
+    renderResults: function (results){
         this.ui.results.empty();
-        this.ui.results.append('<div>' + query + '</div>');
+        results.artists.items.forEach( this.renderArtist, this );
+    },
+
+    renderArtist: function (artist) {
+        this.ui.results.append( artist.name + '<br>' );
     },
 
     bindListeners: function () {
@@ -151,6 +155,23 @@ $.extend(SearchView.prototype, {
     search: function (query) {
         var self = this;
 
-        self.renderResults(query);
+        $.getJSON(
+            'https://api.spotify.com/v1/search',
+            {q: query, type:'album,artist,track', limit: '3'},
+            function(json, textStatus) {
+                self.renderResults(json);
+            }
+        );
     }
+});
+
+/****************** Artist Result View ********************/
+function ArtistResultView( artist ) {
+    this.artist = artist;
+
+    this.template = '<div class="search-result well well-sm"><h4>' + this.artist.name + '</h2></div>';
+}
+
+$.extend(ArtistResultView.prototype, {
+
 });
