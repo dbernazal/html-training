@@ -3,6 +3,8 @@ You must install Git in order to progress through the training. Please see the [
 
 This will be a hands on training. You should have a modern browser and a text editor of your choice installed.
 
+Please clone this repo prior to the training and ensure you can move from section to section.<br>```git clone https://github.com/dbernazal/html-training.git```
+
 I've broken down the application into the sections below. As we progress through the training, you may run the command associated with the step to ensure your local repo is up to date.
 
 ####1. Hello World
