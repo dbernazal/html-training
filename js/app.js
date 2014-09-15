@@ -132,10 +132,16 @@ $.extend(SearchView.prototype, {
     renderResults: function (results){
         this.ui.results.empty();
         results.artists.items.forEach( this.renderArtist, this );
+        results.tracks.items.forEach( this.renderTrack, this );
     },
 
     renderArtist: function (artist) {
         var resultView = new ArtistResultView( artist );
+        this.ui.results.append( resultView.render() );
+    },
+
+    renderTrack: function (track) {
+        var resultView = new TrackResultView( track );
         this.ui.results.append( resultView.render() );
     },
 
@@ -168,6 +174,70 @@ $.extend(SearchView.prototype, {
         );
     }
 });
+
+
+/****************** Track Result View ********************/
+function TrackResultView( track ) {
+    this.track = track;
+
+    this.template = '<div class="search-result well well-sm"><h4>' + this.track.name + '</h2><span class="glyphicon glyphicon-play"></span></div>';
+}
+
+$.extend(TrackResultView.prototype, {
+    init: function () {
+        this.bindListeners();
+    },
+
+    bindListeners: function () {
+        var self = this;
+
+        this.el.click(function (event) {
+            window.app.mainContainer.show( new TrackView(self.track) );
+        });
+    },
+
+    unbindListeners: function () {
+        this.el.off('click');
+    },
+
+    render: function () {
+        this.el = $(this.template);
+        this.init();
+        return this.el;
+    },
+
+    close: function () {
+        this.unbindListeners();
+    }
+});
+
+
+/****************** Track View ********************/
+function TrackView( track ) {
+    this.track = track;
+
+    this.template = this.compileTemplate(track);
+}
+
+$.extend(TrackView.prototype, {
+    compileTemplate: function (track) {
+        var myTemplate = '<div>' +
+                            '<h4>' + this.track.name + '</h4>' +
+                        '</div>';
+        myTemplate = '<iframe src="https://embed.spotify.com/?uri=' + track.uri + '" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>';
+
+        return myTemplate;
+    },
+
+    render: function () {
+        return this.el = $(this.template);
+    },
+
+    close: function () {
+        this.el.remove();
+    },
+});
+
 
 /****************** Artist Result View ********************/
 function ArtistResultView( artist ) {
